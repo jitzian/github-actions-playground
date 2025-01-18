@@ -1,6 +1,20 @@
 name: Learning GitHub Actions
 run-name: ¡I'm learning GitHub Actions!
 on: [push]
+# on: 
+#   push:
+#     branches:
+#       - main
+#       - master
+#       - develop
+#       - feature/*
+#       - hotfix/*
+#       - release/*
+#       - bugfix/*
+#       - fix/*
+#       - fix-*
+#       - bug-*
+#       - bug
 jobs:
   hola-mundo:
     runs-on: ubuntu-latest
@@ -11,3 +25,7 @@ jobs:
         run: echo "USERNAME=${{ github.actor }}" >> $GITHUB_ENV
       - name: Run script
         run: python main.py
+
+
+  
+    

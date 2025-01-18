@@ -1,0 +1,28 @@
+name: Execute on Pull Request
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+        - '**.py'
+    branches:
+      - main
+      - feature/*
+jobs:
+    pr-workflow:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Define variable
+              run: echo "USERNAME=${{ github.actor }}" >> $GITHUB_ENV
+            - name: Run script
+              run: python on_pull_request.py
+    push-workflow:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Define variable
+              run: echo "USERNAME=${{ github.actor }}" >> $GITHUB_ENV
+            - name: Run script
+              run: python on_push.py
