@@ -1,3 +1,10 @@
+
+# Triggers:
+# Push, which runs the workflow every time a 'push' is made to the master branch.
+# Pull Request, which triggers every time a 'pull request' is opened.
+# Workflow Dispatch, which allows users to manually run workflows.
+# Schedule, which runs workflows on a specific schedule.
+
 name: Execute on Pull Request
 run-name: ¡I'm learning GitHub Triggers! #Optional and used for logs
 on:
@@ -14,6 +21,13 @@ on:
 
   schedule:
     - cron: '59 23 * * SUN'
+
+  workflow_dispatch:
+    inputs:
+      username:
+        description: 'Your username'
+        required: true
+        default: 'default-username'
     
 jobs:
     pr-workflow:
@@ -43,3 +57,13 @@ jobs:
               run: echo "USERNAME=${{ github.actor }}" >> $GITHUB_ENV
             - name: Run script
               run: python on_issue_comment.py
+    dispatch-workflow:
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: Define variable
+              run: echo "USERNAME=${{ github.actor }}" >> $GITHUB_ENV
+            - name: Run script
+              run: python on_workflow_dispatch.py
