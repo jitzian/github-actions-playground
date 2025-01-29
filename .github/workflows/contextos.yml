@@ -1,0 +1,64 @@
+name: Context testing
+on: push
+env:
+  mascot: Luna
+  super_duper_var: beautiful
+  env_var: ${{ vars.LENGUAJE_FAVORITO }}
+
+jobs:
+  dump_contexts_to_log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+      - name: Dump strategy context
+        env:
+          STRATEGY_CONTEXT: ${{ toJson(strategy) }}
+        run: echo "$STRATEGY_CONTEXT"
+      - name: Dump matrix context
+        env:
+          MATRIX_CONTEXT: ${{ toJson(matrix) }}
+        run: echo "$MATRIX_CONTEXT"
+  normal_ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run normal CI
+        run: echo "Running normal CI"
+  pull_request_ci:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - name: Run PR CI
+        run: echo "Running PR only CI"
+  describe_my_dog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Describe my dog
+        run: echo "My dog is ${{ env.mascot }} and is ${{ env.super_duper_var }}"
+  describe_new_dog:
+    runs-on: ubuntu-latest
+    env:
+      mascot: Luna Maria
+      super_duper_var: amazing
+    steps:
+      - name: Describe new dog
+        run: echo "My dog is ${{ env.mascot }} and is ${{ env.super_duper_var }}"
+  favorite_language:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Describe favorite language
+        run: echo "My favorite language is ${{ env.env_var }}"
