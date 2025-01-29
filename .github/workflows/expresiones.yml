@@ -1,0 +1,29 @@
+name: Expressions in github actions
+run-name: I'm learning to use Github Expressions
+on:
+  workflow_dispatch:
+    inputs:
+        age:
+            description: 'Age'
+            required: true
+            type: number
+            default: 0
+        name:
+            description: 'Name'
+            required: true
+            default: 'default-name'
+            type: string            
+jobs:
+    expressions-workflow:
+        runs-on: ubuntu-latest
+        if: ${{ github.event.inputs.age >= 18 }}
+        steps:
+            - name: Run Script
+              run : echo "Hello ${{ github.event.inputs.name }}. You are an adult"
+    expressions-workflow-minor:
+        runs-on: ubuntu-latest
+        if: ${{github.event.inputs.age < 18}}
+        steps:
+            - name: Run Script
+              run : echo "Hello ${{ github.event.inputs.name }}. You are a minor"
+
